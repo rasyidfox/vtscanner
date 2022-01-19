@@ -1,8 +1,10 @@
 # vtscanner - An Scanner App for Malicious Apps Detection
 
-This app scans files, urls or hashes using api, the api used are from virustotal, Threatcrowd and Threatminer. But the main thing is virustotal. This application uses a Signature Based Detection approach
+This app scans files, urls or hashes using api, the api used are from virustotal, Threatcrowd and Threatminer. But the main thing is virustotal. This application uses a Signature Based Detection approach. This app requires an api-key to scan because it uses the api from virustotal. If you don't have an api-key virustotal please register first
 
-This app requires an api-key to scan because it uses the api from virustotal. If you don't have an api-key virustotal please register first
+<hr>
+
+This app uses packages vt-py, argparse, os, hashlib, and requests
 
 ## Features
 
