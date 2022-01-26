@@ -43,3 +43,8 @@ This app uses packages vt-py, argparse, os, hashlib, and requests
 #### Tested On : 
 
 Windows 11 - Python 3.9.9
+
+#### Team :
+
+- Ahmad Hassan R
+- Ihsan Labib Syarifuddin
