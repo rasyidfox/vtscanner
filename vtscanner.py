@@ -50,6 +50,8 @@ def scan_url():
                 print("[+]", key, ":", url.last_analysis_stats[key])
         except:
             print ("URL Unknown!")
+
+            
         
 def scan_hash():
     parse = get_options()
@@ -59,12 +61,14 @@ def scan_hash():
         hash = client.get_object("/files/{}", hash_id)
         hash.last_analysis_stats
         print(f"Result for scanning hash {hash_id}\n")
+        print("Virus Total Scans Hash")
         if hash.last_analysis_stats["malicious"] == 0:
             print ("This Hash not contain Malware!")
         else:
             print ("This Hash contain Malware!")
         for key in hash.last_analysis_stats:
             print("[+]", key, ":", hash.last_analysis_stats[key])
+
             
     print("\n")
     print("Threat Crowd Scans Hash")
@@ -83,7 +87,7 @@ def scan_hash():
             print ("This Hash not Contain Malware!")
 
     print("\n")
-    print("Threat Miner Scans File")
+    print("Threat Miner Scans Hash")
     url = f"https://api.threatminer.org/v2/sample.php?q={id_hash}&rt=6"
     response = requests.get(url)
 
@@ -96,21 +100,47 @@ def scan_hash():
         except:
             print("This hash not contain Malware!")
     
+    print("\n")
+    print("Inquest Labs Scan Hash")
+    url = f'https://labs.inquest.net/api/dfi/search/hash/md5?hash={id_hash}'
+    
+    response = requests.get(url)
+    
+    if response.status_code == requests.codes.ok:
+        try:
+            output = response.json()
+            output_view = output['data'][0]
+            for i in output_view:
+                print("[+]",i, ":" , output_view[i])
+            url_1 = f'https://labs.inquest.net/api/dfi/details/attributes?sha256={output_view["sha256"]}'
+            response = requests.get(url_1)
+            if response.status_code == requests.codes.ok:
+                output_1 = response.json()
+                output_view_1 = output_1['data'][0]
+                for i in output_view_1:
+                    print("[+]",i, ":" , output_view_1[i])
+        except:
+            print("This hash not contain Malware!")
+
 def scan_file():
     parse = get_options()
     name = parse.file
     file_hash = hashlib.sha256(parse.file.read()).hexdigest()
     with vt.Client(parse.apikey) as client:
-        hash = client.get_object("/files/{}", file_hash)
-        hash.last_analysis_stats
-        print(f"Result for scanning hash {name}\n")
-        print(f"Hash : {file_hash}\n")
-        if hash.last_analysis_stats["malicious"] == 0:
-            print ("This Files not contain Malware!")
-        else:
-            print ("This Files contain Malware!")
-        for key in hash.last_analysis_stats:
-            print("[+]", key, ":", hash.last_analysis_stats[key])
+        try:
+            hash = client.get_object("/files/{}", file_hash)
+            hash.last_analysis_stats
+            print(f"Result for scanning hash {name}\n")
+            print(f"Hash : {file_hash}\n")
+            if hash.last_analysis_stats["malicious"] == 0:
+                print ("This Files not contain Malware!")
+            else:
+                print ("This Files contain Malware!")
+            for key in hash.last_analysis_stats:
+                print("[+]", key, ":", hash.last_analysis_stats[key])
+        except:
+            print ("Virus Total Scans File")
+            print ("File Unknown!")
 
     print("\n")
     print("Threat Crowd Scans File")
@@ -141,6 +171,30 @@ def scan_file():
                 print(f"{i}. {o[i]}")
         except:
             print("This hash not contain Malware!")
+    
+
+    print("\n")
+    print("Inquest Labs Scan Hash")
+    url = f'https://labs.inquest.net/api/dfi/search/hash/sha256?hash={file_hash}'
+    
+    response = requests.get(url)
+    
+    if response.status_code == requests.codes.ok:
+        try:
+            output = response.json()
+            output_view = output['data'][0]
+            for i in output_view:
+                print("[+]",i, ":" , output_view[i])
+            url_1 = f'https://labs.inquest.net/api/dfi/details/attributes?sha256={output_view["sha256"]}'
+            response = requests.get(url_1)
+            if response.status_code == requests.codes.ok:
+                output_1 = response.json()
+                output_view_1 = output_1['data'][0]
+                for i in output_view_1:
+                    print("[+]",i, ":" , output_view_1[i])
+        except:
+            print("This hash not contain Malware!")
+
 
 def main():
     parse = get_options()
